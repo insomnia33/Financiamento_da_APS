@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: Financiamento da APS – Brasil e Comparações Internacionais</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Plano da Narrativa e Estrutura do Infográfico:
+        1. Título e Introdução: A importância da APS e seu financiamento, objetivo do infográfico.
+        2. Brasil: Novo Modelo de Financiamento da APS (2024):
+            - Texto explicativo dos 3 componentes.
+            - Visualização: Diagrama HTML/CSS dos 3 componentes.
+            - Destaque para o IED e indicadores de Vínculo/Qualidade.
+        3. Olhar Internacional: Como Outros Países Financiam a APS?
+            - Reino Unido: NHS, Global Sum (Carr-Hill), QOF, PCNs. Gráfico de Pizza (Chart.js) para domínios do QOF.
+            - Canadá: CHA, Variação Provincial, foco em equipes. Gráfico de Barras (Chart.js) ilustrando tendência.
+            - Espanha: SNS Descentralizado, Contratos Programa. Estrutura HTML/CSS para áreas dos Contratos Programa.
+            - Portugal: SNS, USFs, Remuneração Mista. Gráfico de Pizza (Chart.js) para componentes da remuneração.
+        4. Comparativo Transversal: Indicadores Chave para o Financiamento da APS:
+            - Tabela HTML comparando indicadores por país em domínios chave.
+        5. Mecanismos de Transferência de Recursos e Legislação:
+            - Tabela HTML resumindo legislação, órgãos e estruturas de prestação.
+        6. Inspirações para o Brasil: O que Podemos Aprender?:
+            - Lista HTML estilizada com lições e indicadores promissores.
+        7. Conclusão: Recapitulação e mensagem final.
+
+        Seleção de Visualizações (Confirmando NO SVG, NO MERMAID JS):
+        - Brasil - Componentes Financiamento: Organize -> Flowchart (HTML/CSS). No SVG.
+        - UK - Domínios QOF: Compare (Composition) -> Pie Chart (Chart.js Canvas). No SVG.
+        - Canadá - Modelos Remuneração: Compare -> Bar Chart (Chart.js Canvas). No SVG.
+        - Espanha - Áreas Contrato Programa: Inform/Compare -> HTML/CSS Structure. No SVG.
+        - Portugal - Componentes Remuneração USF: Compare (Composition) -> Pie Chart (Chart.js Canvas). No SVG.
+        - Comparativo Indicadores: Compare -> Table (HTML). No SVG.
+        - Mecanismos Transferência/Legislação: Organize -> Table (HTML). No SVG.
+        - Inspirações Brasil: Inform/Organize -> Styled List (HTML/CSS with Unicode). No SVG.
+
+        Paleta de Cores Escolhida: "Brilliant Blues"
+        - Dark Blue: #00008B
+        - Medium Blue: #0000CD
+        - Light Blue: #ADD8E6
+        - Accent Teal: #20B2AA
+        - Neutral Grey: #A9A9A9
+        - Background: bg-slate-100
+        - Card Background: bg-white
+
+        Confirmação: NENHUM Mermaid JS ou SVG foi utilizado na geração deste output. Todas as visualizações são Chart.js (Canvas) ou HTML/CSS com Tailwind.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* bg-slate-100 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Ajuste conforme necessário */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Altura base */
+            max-height: 350px; /* Altura máxima */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .text-dark-blue { color: #00008B; }
+        .text-medium-blue { color: #0000CD; }
+        .bg-light-blue { background-color: #ADD8E6; }
+        .border-light-blue { border-color: #ADD8E6; }
+        .text-accent-teal { color: #20B2AA; }
+        .bg-accent-teal { background-color: #20B2AA; }
+        .text-neutral-grey { color: #A9A9A9; }
+        .border-neutral-grey { border-color: #A9A9A9; }
+
+        .flowchart-box {
+            background-color: #E0E7FF; /* indigo-200 for a blueish tint */
+            border: 2px solid #6366F1; /* indigo-500 */
+            color: #3730A3; /* indigo-800 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .flowchart-arrow {
+            position: relative;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .flowchart-arrow::before {
+            content: '▼'; /* Unicode down arrow */
+            font-size: 1.5rem;
+            color: #6366F1; /* indigo-500 */
+        }
+        .horizontal-arrow::before {
+            content: '►'; /* Unicode right arrow */
+        }
+        .section-title {
+            font-size: 1.75rem; /* text-2xl or text-3xl */
+            font-weight: 700;
+            color: #00008B; /* text-dark-blue */
+            margin-bottom: 1.5rem;
+            text-align: center;
+            padding-top: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* shadow-lg */
+        }
+        .sub-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600;
+            color: #0000CD; /* text-medium-blue */
+            margin-bottom: 0.75rem;
+        }
+        .highlight-stat {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #20B2AA; /* text-accent-teal */
+            text-align: center;
+            margin: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #D1D5DB; /* border-gray-300 */
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #E0E7FF; /* bg-indigo-200 */
+            color: #3730A3; /* text-indigo-800 */
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #F3F4F6; /* bg-gray-100 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-800 p-4 md:p-8">
+
+    <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-dark-blue">Financiamento da Atenção Primária à Saúde (APS)</h1>
+        <p class="text-xl text-medium-blue mt-2">Uma Análise Comparativa: Brasil, Reino Unido, Canadá, Espanha e Portugal</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto">
+        <section class="card">
+            <h2 class="section-title">A Essência da APS e Seu Financiamento</h2>
+            <p class="text-lg text-center mb-4">
+                A Atenção Primária à Saúde (APS) é a espinha dorsal de sistemas de saúde eficazes e equitativos globalmente. Funciona como o primeiro e mais frequente ponto de contato dos cidadãos com os serviços de saúde, oferecendo cuidado integral e contínuo.
+            </p>
+            <p class="text-lg text-center">
+                Este infográfico explora como o Brasil e outros países com sistemas de saúde universais financiam sua APS, com foco nos mecanismos de transferência de recursos e nos indicadores utilizados para guiar e avaliar o desempenho, buscando referências para o aprimoramento do modelo brasileiro.
+            </p>
+            <div class="highlight-stat">APS: A Base da Saúde Universal 🌐</div>
+        </section>
+
+        <section class="card">
+            <h2 class="section-title">Brasil: O Novo Modelo de Financiamento da APS (Portaria GM/MS nº 3.493/2024)</h2>
+            <p class="mb-4">
+                O Brasil reestruturou o cofinanciamento federal da APS, buscando maior equidade, fortalecimento do vínculo paciente-equipe e indução de boas práticas. O novo modelo, efetivo a partir de maio de 2024 (com plena operacionalização de alguns componentes em maio de 2025), organiza-se em três componentes principais para as Equipes de Saúde da Família (eSF) e Equipes de Atenção Primária (eAP):
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <div class="flowchart-box">
+                    <h3 class="font-semibold text-lg mb-2">1. Componente Fixo por Equipe</h3>
+                    <p class="text-sm">Transferência mensal fixa por equipe (eSF/eAP) acreditada. Valor ajustado pelo <strong>Índice de Equidade e Dimensionamento (IED)</strong>, que considera vulnerabilidade social (IVS) e porte populacional do município.</p>
+                    <p class="text-xs mt-1">(Ex: Estrato I do IED: R$18.000/mês na transição)</p>
+                </div>
+                <div class="flowchart-box">
+                    <h3 class="font-semibold text-lg mb-2">2. Componente de Vínculo e Acompanhamento Territorial</h3>
+                    <p class="text-sm">Transferência mensal variável por equipe. Incentiva o vínculo e o cuidado contínuo, baseando-se na qualidade do cadastro dos pacientes, eficácia do acompanhamento (especialmente de vulneráveis) e satisfação do usuário (via App Meu SUS Digital).</p>
+                </div>
+                <div class="flowchart-box">
+                    <h3 class="font-semibold text-lg mb-2">3. Componente de Qualidade e Indução de Boas Práticas</h3>
+                    <p class="text-sm">Transferência mensal variável baseada no desempenho da equipe em indicadores de qualidade pactuados. Eixos incluem cuidado a crônicos (Diabetes, Hipertensão), saúde materno-infantil, saúde do idoso e prevenção de câncer.</p>
+                    <p class="text-xs mt-1">(Ex: R$6.000/equipe/mês na transição, simulando classificação "bom")</p>
+                </div>
+            </div>
+             <p class="text-center text-sm text-neutral-grey mt-4">Este modelo substitui o "Previne Brasil", com um período de transição para garantir estabilidade financeira aos municípios.</p>
+        </section>
+
+        <section class="card">
+            <h2 class="section-title">Olhar Internacional: Como Outros Países Financiam a APS?</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <div class="p-6 rounded-lg shadow-md border border-light-blue">
+                    <h3 class="sub-title flex items-center"><img src="https://placehold.co/30x20/00247D/FFFFFF?text=UK" alt="UK Flag" class="mr-2 rounded-sm">Reino Unido (NHS England)</h3>
+                    <p class="mb-2 text-sm">O NHS é financiado por impostos gerais. A APS é provida majoritariamente por General Practitioners (GPs). O financiamento inclui:</p>
+                    <ul class="list-disc list-inside text-sm space-y-1 mb-3">
+                        <li><strong>Global Sum:</strong> Capitação ponderada pela fórmula Carr-Hill (idade, gênero, morbidade, ruralidade, etc.).</li>
+                        <li><strong>Quality and Outcomes Framework (QOF):</strong> Pagamento por desempenho em indicadores clínicos e de saúde pública.</li>
+                        <li><strong>Primary Care Networks (PCNs):</strong> Financiamento para redes de clínicas, incluindo o <em>Additional Roles Reimbursement Scheme (ARRS)</em> para equipes multiprofissionais e o <em>Capacity and Access Improvement Payment (CAIP)</em> para melhoria de acesso e estratificação de risco.</li>
+                    </ul>
+                    <p class="text-sm font-semibold mb-2">Domínios do QOF (2025/26):</p>
+                    <div class="chart-container h-64 max-h-72">
+                        <canvas id="qofChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center mt-2 text-neutral-grey">O QOF incentiva a qualidade em áreas como doenças crônicas, saúde pública e, historicamente, organização.</p>
+                </div>
+
+                <div class="p-6 rounded-lg shadow-md border border-light-blue">
+                    <h3 class="sub-title flex items-center"><img src="https://placehold.co/30x20/FF0000/FFFFFF?text=CA" alt="Canada Flag" class="mr-2 rounded-sm">Canadá</h3>
+                    <p class="mb-2 text-sm">Sistema universal (Medicare) com financiamento público (federal-provincial). A gestão da APS é provincial, resultando em modelos variados:</p>
+                    <ul class="list-disc list-inside text-sm space-y-1 mb-3">
+                        <li><strong>Remuneração Médica:</strong> Predomínio do Fee-for-Service (FFS), mas com transição para modelos mistos, capitação (especialmente em Family Health Organizations - FHOs) e salários (Community Health Centres - CHCs).</li>
+                        <li><strong>Foco em Equipes:</strong> Incentivos para Family Health Teams (FHTs), Primary Care Networks (PCNs) e Groupes de Médecine de Famille (GMFs), visando cuidado interdisciplinar.</li>
+                    </ul>
+                    <p class="text-sm font-semibold mb-2">Tendência na Remuneração da APS (Conceitual):</p>
+                     <div class="chart-container h-64 max-h-72">
+                        <canvas id="canadaPaymentModelChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center mt-2 text-neutral-grey">Há um movimento para modelos que valorizam a abrangência e o cuidado em equipe, além do volume de atendimentos.</p>
+                </div>
+
+                <div class="p-6 rounded-lg shadow-md border border-light-blue">
+                    <h3 class="sub-title flex items-center"><img src="https://placehold.co/30x20/C60B1E/FFC400?text=ES" alt="Spain Flag" class="mr-2 rounded-sm">Espanha</h3>
+                    <p class="mb-2 text-sm">O Sistema Nacional de Saúde (SNS) é descentralizado, com Comunidades Autônomas (CAs) responsáveis pela APS. Financiamento por impostos.</p>
+                    <ul class="list-disc list-inside text-sm space-y-1 mb-3">
+                        <li><strong>Remuneração:</strong> Profissionais da APS majoritariamente assalariados, com componentes de capitação e pequeno P4P.</li>
+                        <li><strong>Contratos Programa:</strong> Ferramenta chave das CAs para vincular financiamento a objetivos e desempenho dos Centros de Salud (Equipes de Atenção Primária - EAP).</li>
+                    </ul>
+                    <p class="text-sm font-semibold mb-2">Exemplo: Áreas e Pesos em Contrato Programa (Andaluzia 2025):</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center p-2 bg-blue-100 rounded"><span>♿ Acessibilidade</span> <span class="font-bold text-medium-blue">30%</span></div>
+                        <div class="flex justify-between items-center p-2 bg-teal-100 rounded"><span>❤️ Resultados em Saúde</span> <span class="font-bold text-accent-teal">20%</span></div>
+                        <div class="flex justify-between items-center p-2 bg-indigo-100 rounded"><span>⚙️ Eficiência</span> <span class="font-bold text-indigo-600">50%</span></div>
+                    </div>
+                     <p class="text-xs text-center mt-2 text-neutral-grey">Contratos programa buscam alinhar recursos com metas em diversas dimensões do cuidado.</p>
+                </div>
+
+                <div class="p-6 rounded-lg shadow-md border border-light-blue">
+                     <h3 class="sub-title flex items-center"><img src="https://placehold.co/30x20/006600/FF0000?text=PT" alt="Portugal Flag" class="mr-2 rounded-sm">Portugal</h3>
+                    <p class="mb-2 text-sm">O Serviço Nacional de Saúde (SNS) é universal. A reforma da APS focou nas Unidades de Saúde Familiar (USF), equipes multidisciplinares auto-organizadas.</p>
+                    <ul class="list-disc list-inside text-sm space-y-1 mb-3">
+                        <li><strong>Financiamento USF:</strong> Negociado anualmente (carta de compromisso).</li>
+                        <li><strong>Remuneração Médica (USF):</strong> Mista - salário base, capitação ajustada por risco individual do utente, P4P e pagamento por atos.</li>
+                        <li><strong>Incentivos:</strong> Para enfermeiros, secretários clínicos e institucionais para a USF (baseados no Índice de Desempenho da Equipe - IDE e indicadores SIDA).</li>
+                    </ul>
+                     <p class="text-sm font-semibold mb-2">Componentes da Remuneração Médica em USF (Modelo B/Novo DL):</p>
+                    <div class="chart-container h-64 max-h-72">
+                        <canvas id="portugalRemunerationChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center mt-2 text-neutral-grey">Modelo busca valorizar desempenho, acesso, qualidade e integração de cuidados.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2 class="section-title">Comparativo Transversal: Indicadores Chave para o Financiamento da APS</h2>
+            <p class="mb-6 text-center">Uma visão de como diferentes países utilizam indicadores em domínios críticos para orientar o financiamento e a melhoria da APS.</p>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Domínio do Indicador</th>
+                            <th>Brasil (Novo Financiamento)</th>
+                            <th>Reino Unido (QOF/CAIP)</th>
+                            <th>Canadá (Ex. Provinciais)</th>
+                            <th>Espanha (Ex. CAs)</th>
+                            <th>Portugal (SIDA/USF)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Acesso e Oportunidade</strong></td>
+                            <td>Acompanhamento (contatos); Qualidade (acesso moderno)</td>
+                            <td>Acesso moderno à clínica (telefonia, online, navegação)</td>
+                            <td>Tempo para 3ª consulta (AB); Acesso mesmo dia (ON)</td>
+                            <td>Tempo resposta consultas (AND); % vagas indisponíveis (AND)</td>
+                            <td>Taxa utilização consulta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualidade Clínica (Doenças Crônicas)</strong></td>
+                            <td>Indicadores para Diabetes, Hipertensão</td>
+                            <td>Metas para Diabetes, DAC, IC, Hipertensão (QOF)</td>
+                            <td>Bônus gestão crônicos (BC); Prevalência (ON FHT)</td>
+                            <td>Controle HbA1c (País Basco); Planos Ação PCC (AND)</td>
+                            <td>DM (HbA1c); HTA (risco DCV)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vínculo e Cadastro</strong></td>
+                            <td>Qualidade cadastro; Acompanhamento; Satisfação (Meu SUS Digital)</td>
+                            <td>Registro GP; Estratificação de risco para continuidade (CAIP)</td>
+                            <td>Inscrição paciente (ON FHO); Modelo LFP (BC)</td>
+                            <td>Cadastro cartão saúde; Duração com mesmo profissional (OECD)</td>
+                            <td>Listas de utentes ajustadas por risco</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Equidade e Vulnerabilidade</strong></td>
+                            <td>Componente Fixo (IED); Vínculo (ponderação vulnerabilidade)</td>
+                            <td>Carr-Hill (idade, ruralidade; criticado por privação)</td>
+                            <td>CHCs focam em vulneráveis</td>
+                            <td>SNS visa equidade</td>
+                            <td>Listas ajustadas por risco, privilegiando vulneráveis</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2 class="section-title">Mecanismos Institucionais e Legislativos na APS</h2>
+            <p class="mb-6 text-center">A organização e o financiamento da APS são moldados por leis e instituições específicas em cada país.</p>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>País</th>
+                            <th>Legislação Chave (Exemplo)</th>
+                            <th>Principal Órgão Institucional (Financiamento/Supervisão APS)</th>
+                            <th>Estrutura Primária de Prestação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Brasil</strong></td>
+                            <td>CF/88, Lei 8.080/90, Port. 3.493/24</td>
+                            <td>Ministério da Saúde, Secretarias Estaduais/Municipais</td>
+                            <td>UBS, eSF, eAP, eMulti</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reino Unido</strong></td>
+                            <td>NHS Act 2006, GMS SFE Directions</td>
+                            <td>NHS England, Integrated Care Boards (ICBs)</td>
+                            <td>General Practices, PCNs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Canadá</strong></td>
+                            <td>Canada Health Act, Leis Provinciais</td>
+                            <td>Ministérios da Saúde Provinciais/Territoriais</td>
+                            <td>Consultórios, CHCs, FHTs, PCNs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Espanha</strong></td>
+                            <td>Ley General de Sanidad, Leis das CAs</td>
+                            <td>Ministério da Sanidade (coord.), Servicios de Salud das CAs</td>
+                            <td>Centros de Salud, EAP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Portugal</strong></td>
+                            <td>Lei de Bases da Saúde, DL 103/2023 (USF)</td>
+                            <td>Ministério da Saúde, ACSS, ARS, ULS</td>
+                            <td>USF, UCSP, ACeS</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2 class="section-title">Inspirações para o Brasil: O Que Podemos Aprender?</h2>
+            <p class="mb-6 text-center">A experiência internacional oferece insights valiosos para o contínuo fortalecimento da APS no Brasil:</p>
+            <ul class="space-y-4">
+                <li class="flex items-start">
+                    <span class="text-accent-teal text-2xl mr-3">🎯</span>
+                    <div>
+                        <h4 class="font-semibold text-medium-blue">Estratificação de Risco Avançada (Reino Unido/Portugal):</h4>
+                        <p class="text-sm">Utilizar ferramentas digitais e dados individualizados para identificar pacientes vulneráveis e direcionar o cuidado proativo, como nas PCNs do Reino Unido ou nas listas ajustadas por risco das USFs portuguesas. Isso pode refinar o componente de "Vínculo e Acompanhamento" brasileiro.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-accent-teal text-2xl mr-3"> 계약</span> <div>
+                        <h4 class="font-semibold text-medium-blue">Modelos Contratuais Abrangentes (Espanha):</h4>
+                        <p class="text-sm">Os "Contratos Programa" espanhóis, com domínios ponderados (acessibilidade, resultados, eficiência), oferecem um modelo estruturado para o componente de "Qualidade" brasileiro, incentivando um desempenho balanceado.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-accent-teal text-2xl mr-3">🤝</span>
+                    <div>
+                        <h4 class="font-semibold text-medium-blue">Fortalecimento do Cuidado em Equipe (Canadá/Portugal):</h4>
+                        <p class="text-sm">Desenvolver indicadores específicos para as equipes multiprofissionais (eMulti), inspirando-se em como Canadá e Portugal financiam e medem o desempenho de suas equipes interdisciplinares (FHTs, USFs), focando na colaboração e resolutividade.</p>
+                    </div>
+                </li>
+                 <li class="flex items-start">
+                    <span class="text-accent-teal text-2xl mr-3">📊</span>
+                    <div>
+                        <h4 class="font-semibold text-medium-blue">Indicadores de Acesso Modernos e Objetivos (Reino Unido/Canadá):</h4>
+                        <p class="text-sm">Adotar métricas como "Tempo para a Terceira Consulta Disponível Seguinte" (Canadá) ou indicadores de uso de telefonia digital e consultas online (Reino Unido) para qualificar e modernizar a medição do acesso na APS brasileira.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="card text-center">
+            <h2 class="section-title">Conclusão: Rumo a uma APS Mais Forte e Equitativa</h2>
+            <p class="text-lg mb-4">
+                O financiamento da Atenção Primária à Saúde é um desafio global dinâmico. A comparação internacional revela uma busca constante por modelos que recompensem valor, promovam a equidade e melhorem a saúde da população.
+            </p>
+            <p class="text-lg">
+                O Brasil, com seu novo modelo de financiamento, demonstra um compromisso com a evolução. Ao aprender com as experiências de outros países e adaptar as melhores práticas ao contexto único do SUS, o país pode fortalecer ainda mais sua APS, consolidando-a como pilar essencial para a saúde de todos os brasileiros.
+            </p>
+        </section>
+    </main>
+
+    <footer class="text-center mt-12 mb-6">
+        <p class="text-sm text-neutral-grey">&copy; <span id="currentYear"></span> Infográfico sobre Financiamento da APS. Todos os dados baseados no relatório de pesquisa fornecido.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        function wrapLabels(labels, maxLength = 16) {
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxLength) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    words.forEach(word => {
+                        if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                            lines.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine += word + ' ';
+                        }
+                    });
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            });
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        // QOF Chart (UK)
+        const qofLabels = wrapLabels(['Clínico (Doenças Crônicas, Saúde Mental, etc.)', 'Saúde Pública (Vacinação, Rastreios)']);
+        const qofData = {
+            labels: qofLabels,
+            datasets: [{
+                label: 'Domínios do QOF',
+                data: [70, 30], // Dados ilustrativos da ponderação
+                backgroundColor: ['#0000CD', '#20B2AA'], // Medium Blue, Accent Teal
+                borderColor: ['#FFFFFF', '#FFFFFF'],
+                borderWidth: 2
+            }]
+        };
+        new Chart(document.getElementById('qofChart'), {
+            type: 'pie',
+            data: qofData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 10 }}},
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Canada Payment Model Chart
+        const canadaPaymentLabels = wrapLabels(['Fee-for-Service (FFS) Tradicional', 'Modelos Mistos / Capitação', 'Financiamento Baseado em Equipe']);
+        const canadaPaymentData = {
+            labels: canadaPaymentLabels,
+            datasets: [{
+                label: 'Ênfase em Modelos de Remuneração (Conceitual)',
+                data: [40, 35, 25], // Dados ilustrativos da tendência
+                backgroundColor: ['#ADD8E6', '#0000CD', '#20B2AA'], // Light Blue, Medium Blue, Accent Teal
+                borderColor: '#FFFFFF',
+                borderWidth: 1
+            }]
+        };
+        new Chart(document.getElementById('canadaPaymentModelChart'), {
+            type: 'bar',
+            data: canadaPaymentData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { x: { beginAtZero: true, max: 100 } },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+        
+        // Portugal Remuneration Chart
+        const portugalRemunerationLabels = wrapLabels(['Salário Base/Carreira', 'Capitação (Ajustada por Risco)', 'Pagamento por Desempenho (P4P)', 'Pagamento por Atos Específicos']);
+        const portugalRemunerationData = {
+            labels: portugalRemunerationLabels,
+            datasets: [{
+                label: 'Componentes da Remuneração Médica em USF',
+                data: [50, 25, 15, 10], // Dados ilustrativos
+                backgroundColor: ['#00008B', '#0000CD', '#20B2AA', '#ADD8E6'], // Dark Blue, Medium Blue, Accent Teal, Light Blue
+                borderColor: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'],
+                borderWidth: 2
+            }]
+        };
+        new Chart(document.getElementById('portugalRemunerationChart'), {
+            type: 'pie',
+            data: portugalRemunerationData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 10 }}},
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

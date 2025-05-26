@@ -1,0 +1,1 @@
+![Infográfico sobre Financiamento da APS](infografico.jpeg)
